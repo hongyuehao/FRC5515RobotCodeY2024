@@ -63,7 +63,7 @@ public class SwerveMod {
             mDriveMotor.setControl(dutyCycleOut);
         }
         else {
-            double velocity = Conversions.MPSToRPS(desiredState.speedMetersPerSecond,
+            double velocity = Conversions.MPSToFalcon(desiredState.speedMetersPerSecond,
                     Constants.TeleopConstants.wheelCircumference, Constants.TeleopConstants.driveGearRatio);
             velocityVoltage.Velocity = velocity;
             velocityVoltage.FeedForward = feedforward.calculate(desiredState.speedMetersPerSecond);
@@ -73,7 +73,7 @@ public class SwerveMod {
         double angle = (Math
                 .abs(desiredState.speedMetersPerSecond) <= (Constants.TeleopConstants.maxSpeedMetersPerSecond
                         * Constants.driveAngleDeadband)) ? lastAngle : desiredState.angle.getDegrees(); //Prevent rotating module if speed is less then 1%. Prevents Jittering.
-        positionVoltage.Position = Conversions.degreesToRotations(angle, TeleopConstants.angleGearRatio);
+        positionVoltage.Position = Conversions.degreesToFalcon(angle, TeleopConstants.angleGearRatio);
         mAngleMotor.setControl(positionVoltage);
         lastAngle = angle;
     }
@@ -115,15 +115,15 @@ public class SwerveMod {
     }
 
     public SwerveModuleState getState() {
-        double velocity = Conversions.RPSToMPS(mDriveMotor.getVelocity().getValue(),
+        double velocity = Conversions.falconToMPS(mDriveMotor.getVelocity().getValue(),
                 Constants.TeleopConstants.wheelCircumference, Constants.TeleopConstants.driveGearRatio);
         Rotation2d angle = Rotation2d.fromRotations(mAngleMotor.getPosition().getValue());
         return new SwerveModuleState(velocity, angle);
     }
     
     public SwerveModulePosition getPosition() {
-        double position = Conversions.rotationToMeters(mDriveMotor.getPosition().getValue(),
-                Constants.TeleopConstants.wheelCircumference, Constants.TeleopConstants.driveGearRatio);
+        double position = Conversions.falconToMeters(mDriveMotor.getPosition().getValue(),
+                Constants.TeleopConstants.driveGearRatio, Constants.TeleopConstants.wheelCircumference);
         Rotation2d angle = Rotation2d.fromRotations(mAngleMotor.getPosition().getValue());
         return new SwerveModulePosition(position, angle);
     }
