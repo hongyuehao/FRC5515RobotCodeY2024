@@ -1,6 +1,6 @@
-# FRC5515RobotCode 2024
+# 5515 RobotCode for 2024 Crescendo
 
-In this code, we've made use of phoenix 6 beta library to work with a previous used Swerve codes.
+In this code, we've made use of phoenix 6 library to work with a previous used Swerve codes.
 
 ## Details of our Swerve Base:
 - MK4i Level 3
